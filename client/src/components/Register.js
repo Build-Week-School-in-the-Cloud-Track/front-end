@@ -80,7 +80,7 @@ const formSubmit = () => {
 const postNewUser = (newUser) => {
     
     axios
-    .post(`https://reqres.in/api/users`, newUser)
+    .post(`https://school-in-the-cloud-backend.herokuapp.com`, newUser)
     .then((res) => {
       setUsers([res.data, ...users]);
       setFormValues(initialFormValues);
