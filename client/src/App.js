@@ -1,7 +1,6 @@
 import React from 'react';
 import Login from './components/Login'
 import { Switch, Route } from "react-router-dom";
-import styled from 'styled-components';
 import Register from "./components/Register";
 import Taskform from './components/Taskform'
 import Header from './components/Header'

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as yup from 'yup'
-import axios from 'axios'
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { Link, useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import img from '../img/clouds1.jpg'
 
@@ -115,98 +116,108 @@ button:disabled {
 `
 
 const formSchema = yup.object().shape({
-    username: yup.string().required('please provide username'),
-    password: yup.string()
-        .required('please enter a password')
-        .min(6, 'password is too short')
-})
+  email: yup.string().required("please provide email"),
+  password: yup
+    .string()
+    .required("please enter a password")
+    .min(5, "password is too short"),
+});
 
+export default function Login() {
+  const defaultformValues = {
+    email: "",
+    password: "",
+  };
 
-export default function Login () {
+  const [formValues, setFormValues] = useState(defaultformValues);
+  const [errorState, setErrorState] = useState({
+    ...defaultformValues,
+    requestError: "",
+  });
+  const [disabled, setDisabled] = useState(true);
 
-    const defaultformValues = {
-        username: '', 
-        password: '',
-    }
+  const history = useHistory();
 
-    const [formValues, setFormValues] = useState(defaultformValues)
-    const [errorState, setErrorState] = useState({...defaultformValues})
-    const [disabled, setDisabled] = useState(true)
+  useEffect(() => {
+    formSchema.isValid(formValues).then(valid => setDisabled(!valid));
+  }, [formValues, formSchema]);
 
-    useEffect(() => {
-        formSchema.isValid(formValues)
-        .then(valid => setDisabled(!valid))
-    }, [formValues, formSchema])
+  const validate = e => {
+    yup
+      .reach(formSchema, e.target.name)
+      .validate(e.target.value)
+      .then(valid => {
+        setErrorState({
+          ...errorState,
+          [e.target.name]: "",
+        });
+      })
+      .catch(err => {
+        setErrorState({
+          ...errorState,
+          [e.target.name]: err.errors[0],
+        });
+      });
+  };
 
-    const validate = e => {
-        yup
-            .reach(formSchema, e.target.name)
-            .validate(e.target.value)
-            .then(valid => {
-                setErrorState({
-                    ...errorState, [e.target.name]: ''
-                })
-            })
-            .catch(err => {
-                setErrorState({
-                    ...errorState, [e.target.name]: err.errors[0]
-                })
-            })
-    }
+  const inputChange = e => {
+    e.persist();
+    validate(e);
+    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+  };
 
-    const inputChange = e => {
-        e.persist()
-        validate(e)
-        setFormValues({...formValues, [e.target.name]: e.target.value})
+  const formSubmit = e => {
+    e.preventDefault();
+    const user = {
+      email: formValues.email.trim(),
+      password: formValues.password.trim(),
+    };
+    axiosWithAuth()
+      .post("/api/auth/login", user)
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
+        history.push(`/${res.data.user.role}`);
+      })
+      .catch(err => {
+        setErrorState({
+          ...errorState,
+          requestError: err.response.data.error,
+        });
+      });
+  };
 
-    }
-
-    const formSubmit = e => {
-        e.preventDefault()
-        console.log('form submitted')
-        const user = {
-            username: formValues.username.trim(),
-            password: formValues.password.trim(),
-        }
-        axios.post('https://reqres.in/api/user', user)
-            .then(res => {
-                console.log('success', res.data)
-                setFormValues(defaultformValues)
-            })
-            .catch(err => console.log(err))
-
-    }
-
-    return (
-        <StyledLogin>
-            <div className='container'>
-              <form onSubmit={formSubmit}>
-              <h2>Login</h2>
-                  <label>
-                      Username
-                      <input
-                      type='text'
-                      name='username'
-                      id='username'
-                      value={formValues.username}
-                      onChange={inputChange}
-                      />
-                      {errorState.username.length > 0 ? <p className='error'>{errorState.username}</p> : null}
-                  </label>
-                  <label>
-                      Password
-                      <input
-                      type='password'
-                      name='password'
-                      id='password'
-                      value={formValues.password}
-                      onChange={inputChange}
-                      />
-                      {errorState.password.length > 0 ? <p className='error'>{errorState.password}</p> : null}
-                  </label>
-                  <button id='submitBtn' disabled={disabled}>Submit</button>
-              </form>
-            </div>
-        </StyledLogin>
-    )
+  return (
+    <StyledLogin>
+      <div className='container'>
+        <form onSubmit={formSubmit}>
+          <h2>Login</h2>
+          <label>
+            Email
+            <input
+              type='text'
+              name='email'
+              id='email'
+              value={formValues.email}
+              onChange={inputChange}
+            />
+            {errorState.email ? <p className='error'>{errorState.username}</p> : null}
+          </label>
+          <label>
+            Password
+            <input
+              type='password'
+              name='password'
+              id='password'
+              value={formValues.password}
+              onChange={inputChange}
+            />
+            {errorState.password ? <p className='error'>{errorState.password}</p> : null}
+          </label>
+          <button id='submitBtn' disabled={disabled}>Submit</button>
+          {errorState.requestError && <p classname="error">{errorState.requestError}</p>}
+          <Link to="/register">Don't have an account?</Link>
+        </form>
+      </div>
+    </StyledLogin>
+  );
 }

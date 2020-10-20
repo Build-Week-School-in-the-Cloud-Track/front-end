@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
-import axios from 'axios'
+import { Link, useHistory } from "react-router-dom";
 import * as yup from "yup";
 import styled from 'styled-components';
 import img from '../img/clouds1.jpg'
@@ -115,7 +115,7 @@ const initialFormValues = {
   email: "",
   password: "",
   name: "",
-  role: "",
+  role: 0,
 };
 
 const initialFormErrors = {
@@ -132,6 +132,7 @@ function Register() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
+  const history = useHistory();
 
   //FormSchema Below
   const registerFormSchema = yup.object().shape({
@@ -149,10 +150,7 @@ function Register() {
       .min(3, "Must be at least three characters"),
     role: yup
       .string()
-      .oneOf(
-        ["student", "admin", "volunteer"],
-        "Please select student, admin, or volunteer"
-      )
+      .oneOf(["1", "2", "3"], "Please select student, admin, or volunteer")
       .required("Selection required"),
   }); //End of FormSchema
   // inputChange function below
@@ -183,16 +181,18 @@ function Register() {
   const onSubmit = evt => {
     evt.preventDefault();
     const newUser = {
-      email: formValues.email,
-      password: formValues.password,
-      name: formValues.name,
-      role: formValues.role,
+      email: formValues.email.trim(),
+      password: formValues.password.trim(),
+      name: formValues.name.trim(),
+      role: parseInt(formValues.role),
     };
-    // axiosWithAuth()
-    //   .post("/api/auth/register", newUser)
-    axios.post('https://reqres.in/api/user')
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    axiosWithAuth()
+      .post("api/auth/register", newUser)
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
+        history.push(`/${res.data.user.role}`);
+      })
+      .catch(err => console.log(err.response));
   };
 
   // onInputChange function input change by target value
@@ -213,60 +213,61 @@ function Register() {
     <StyledRegister>
     <div className='container'>
       <form onSubmit={onSubmit}>
-        <div className="whole-form">
-          <h2>Sign Up Below!</h2>
-          <div className="form-inputs">
+      <div className="whole-form">
+        <h2>Sign Up Below!</h2>
+        <div className="form-inputs">
+          <label>
+            Email:
+            <input
+              value={formValues.email}
+              onChange={onInputChange}
+              name="email"
+              type="email"
+            />
+          </label>
+          <div>{formErrors.email}</div>
+          <label>
+            Password:
+            <input
+              value={formValues.password}
+              onChange={onInputChange}
+              name="password"
+              type="password"
+            />
+          </label>
+          <div>{formErrors.password}</div>
+          <label>
+            Name:
+            <input
+              value={formValues.name}
+              onChange={onInputChange}
+              name="name"
+              type="name"
+            />
+          </label>
+          <div>{formErrors.name}</div>
+          <div className="select">
             <label>
-              Email:
-              <input
-                value={formValues.email}
+              Role
+              <select
+                className="field"
                 onChange={onInputChange}
-                name="email"
-                type="email"
-              />
+                value={formValues.role}
+                name="role"
+              >
+                <option value="">--Select--</option>
+                <option value={1}>Student</option>
+                <option value={2}>Admin</option>
+                <option value={3}>Volunteer</option>
+              </select>
             </label>
-            <div>{formErrors.email}</div>
-            <label>
-              Password:
-              <input
-                value={formValues.password}
-                onChange={onInputChange}
-                name="password"
-                type="password"
-              />
-            </label>
-            <div>{formErrors.password}</div>
-            <label>
-              Name:
-              <input
-                value={formValues.name}
-                onChange={onInputChange}
-                name="name"
-                type="name"
-              />
-            </label>
-            <div>{formErrors.name}</div>
-            <div className="select">
-              <label>
-                Role
-                <select
-                  className="field"
-                  onChange={onInputChange}
-                  value={formValues.role}
-                  name="role"
-                >
-                  <option value="">--Select--</option>
-                  <option value="student">Student</option>
-                  <option value="admin">Admin</option>
-                  <option value="volunteer">Volunteer</option>
-                </select>
-              </label>
-              <div>{formErrors.role}</div>
-            </div>
+            <div>{formErrors.role}</div>
           </div>
         </div>
-        <button disabled={disabled}>Register</button>
-      </form>
+      </div>
+      <button disabled={disabled}>Register</button>
+      <Link to="/login">Already have an account?</Link>
+    </form>
     </div>
     </StyledRegister>
   );
