@@ -40,10 +40,7 @@ function Register() {
       .min(3, "Must be at least three characters"),
     role: yup
       .string()
-      .oneOf(
-        ["student", "admin", "volunteer"],
-        "Please select student, admin, or volunteer"
-      )
+      .oneOf(["1", "2", "3"], "Please select student, admin, or volunteer")
       .required("Selection required"),
   }); //End of FormSchema
   // inputChange function below
@@ -74,12 +71,10 @@ function Register() {
   const onSubmit = evt => {
     evt.preventDefault();
     const newUser = {
-      user: {
-        email: formValues.email,
-        password: formValues.password,
-        name: formValues.name,
-        role: formValues.role,
-      },
+      email: formValues.email,
+      password: formValues.password,
+      name: formValues.name,
+      role: formValues.role,
     };
     axiosWithAuth()
       .post("/api/auth/register", newUser)
@@ -146,9 +141,9 @@ function Register() {
                 name="role"
               >
                 <option value="">--Select--</option>
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-                <option value="volunteer">Volunteer</option>
+                <option value={1}>Student</option>
+                <option value={2}>Admin</option>
+                <option value={3}>Volunteer</option>
               </select>
             </label>
             <div>{formErrors.role}</div>
