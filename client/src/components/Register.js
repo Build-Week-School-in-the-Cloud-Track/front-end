@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const initialFormValues = {
   email: "",
   password: "",
   name: "",
-  role: "",
+  role: 0,
 };
 
 const initialFormErrors = {
@@ -24,6 +24,7 @@ function Register() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
+  const history = useHistory();
 
   //FormSchema Below
   const registerFormSchema = yup.object().shape({
@@ -72,14 +73,17 @@ function Register() {
   const onSubmit = evt => {
     evt.preventDefault();
     const newUser = {
-      email: formValues.email,
-      password: formValues.password,
-      name: formValues.name,
-      role: formValues.role,
+      email: formValues.email.trim(),
+      password: formValues.password.trim(),
+      name: formValues.name.trim(),
+      role: parseInt(formValues.role),
     };
     axiosWithAuth()
       .post("/api/auth/register", newUser)
-      .then(res => console.log(res))
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
+        history.push(`/${formValues.role}`);
+      })
       .catch(err => console.log(err));
   };
 

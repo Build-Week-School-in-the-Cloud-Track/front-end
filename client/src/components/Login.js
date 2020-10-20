@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const formSchema = yup.object().shape({
-  username: yup.string().required("please provide username"),
+  email: yup.string().required("please provide email"),
   password: yup
     .string()
     .required("please enter a password")
-    .min(6, "password is too short"),
+    .min(5, "password is too short"),
 });
 
 export default function Login() {
   const defaultformValues = {
-    username: "",
+    email: "",
     password: "",
   };
 
@@ -53,18 +54,12 @@ export default function Login() {
     e.preventDefault();
     console.log("form submitted");
     const user = {
-      username: formValues.username.trim(),
+      email: formValues.email.trim(),
       password: formValues.password.trim(),
     };
-    axios
-      .post(
-        "https://school-in-the-cloud-backend.herokuapp.com/api/auth/login",
-        user
-      )
-      .then(res => {
-        console.log("success", res.data);
-        setFormValues(defaultformValues);
-      })
+    axiosWithAuth()
+      .post("/api/auth/login", user)
+      .then(res => console.log(res))
       .catch(err => console.log(err));
   };
 
@@ -74,13 +69,13 @@ export default function Login() {
         Username
         <input
           type="text"
-          name="username"
-          id="username"
-          value={formValues.username}
+          name="email"
+          id="email"
+          value={formValues.email}
           onChange={inputChange}
         />
-        {errorState.username.length > 0 ? (
-          <p className="error">{errorState.username}</p>
+        {errorState.email.length > 0 ? (
+          <p className="error">{errorState.email}</p>
         ) : null}
       </label>
       <label>
