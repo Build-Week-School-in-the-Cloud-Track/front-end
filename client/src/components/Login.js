@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const formSchema = yup.object().shape({
@@ -19,8 +19,13 @@ export default function Login() {
   };
 
   const [formValues, setFormValues] = useState(defaultformValues);
-  const [errorState, setErrorState] = useState({ ...defaultformValues });
+  const [errorState, setErrorState] = useState({
+    ...defaultformValues,
+    requestError: "",
+  });
   const [disabled, setDisabled] = useState(true);
+
+  const history = useHistory();
 
   useEffect(() => {
     formSchema.isValid(formValues).then(valid => setDisabled(!valid));
@@ -52,21 +57,28 @@ export default function Login() {
 
   const formSubmit = e => {
     e.preventDefault();
-    console.log("form submitted");
     const user = {
       email: formValues.email.trim(),
       password: formValues.password.trim(),
     };
     axiosWithAuth()
       .post("/api/auth/login", user)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .then(res => {
+        localStorage.setItem("token", res.data.token);
+        history.push(`/${res.data.user.role}`);
+      })
+      .catch(err => {
+        setErrorState({
+          ...errorState,
+          requestError: err.response.data.error,
+        });
+      });
   };
 
   return (
     <form onSubmit={formSubmit}>
       <label>
-        Username
+        Email
         <input
           type="text"
           name="email"
@@ -94,6 +106,9 @@ export default function Login() {
       <button id="submitBtn" disabled={disabled}>
         Submit
       </button>
+      {errorState.requestError && (
+        <p classname="error">{errorState.requestError}</p>
+      )}
       <Link to="/register">Don't have an account?</Link>
     </form>
   );
