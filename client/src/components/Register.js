@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import axios from 'axios'
 import * as yup from "yup";
 
 const initialFormValues = {
@@ -79,8 +80,9 @@ function Register() {
       name: formValues.name,
       role: formValues.role,
     };
-    axiosWithAuth()
-      .post("/api/auth/register", newUser)
+    // axiosWithAuth()
+    //   .post("/api/auth/register", newUser)
+    axios.post('https://reqres.in/api/user')
       .then(res => console.log(res))
       .catch(err => console.log(err));
   };

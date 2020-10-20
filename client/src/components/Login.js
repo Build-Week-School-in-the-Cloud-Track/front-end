@@ -56,7 +56,7 @@ export default function Login () {
             username: formValues.username.trim(),
             password: formValues.password.trim(),
         }
-        axios.post('https://school-in-the-cloud-backend.herokuapp.com/api/auth/login', user)
+        axios.post('https://reqres.in/api/user', user)
             .then(res => {
                 console.log('success', res.data)
                 setFormValues(defaultformValues)
