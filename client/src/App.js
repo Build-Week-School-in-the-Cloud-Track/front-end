@@ -1,19 +1,18 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
+import Login from './components/Login'
 import { Switch, Route } from "react-router-dom";
-import Login from "./components/Login";
-
 import Register from "./components/Register";
-import Taskform from "./components/Taskform";
+import Taskform from './components/Taskform'
+import Header from './components/Header'
 
 export default function App() {
   return (
     <div className="App">
+      <Header />
       <Switch>
         <Route path="/register" component={Register} />
-        <Route path="/taskform" component={Taskform} />
+        <Route path="/admin" component={Taskform} />
         <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
       </Switch>
     </div>
   );

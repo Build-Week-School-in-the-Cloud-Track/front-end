@@ -1,8 +1,115 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
-import axios from "axios";
-import * as yup from "yup";
 import { Link, useHistory } from "react-router-dom";
+import * as yup from "yup";
+import styled from 'styled-components';
+import img from '../img/clouds1.jpg'
+
+
+export const StyledRegister = styled.div`
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 300px;
+  margin: 0 auto;
+
+}
+.container {
+  height: 100vh;
+  background-image: url(${img});
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px 0;
+  font-size: 1.4rem;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin: 5px 0 0;
+  display: block;
+  width: 100%;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+  transition: all 0.3s;
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+  background-color: white;
+}
+select {
+  height: 40px;
+  width: 325px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #0099ff;
+}
+
+input:focus {
+  outline: none;
+  border-color:#0099ff;
+}
+
+input:placeholder {
+  color: #a8b2b2;
+}
+
+button {
+  width: 150px;
+  display: inline-block;
+  padding: 8px 11px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 5px;
+  letter-spacing: 2px;
+  outline: none;
+  background-color: #0099ff;
+  background-image: linear-gradient(to right, #0099ff, #ccf5ff);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-image: none;
+  background-color: #ccf5ff;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+
+button:disabled {
+  background-image: none;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
+}
+
+.error {
+  font-size: 1.2rem;
+  color: red;
+}
+
+.terms {
+  display: inline-block;
+  align-self: self-start;
+}
+
+.terms input {
+  width: 15px;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+`
 
 const initialFormValues = {
   email: "",
@@ -103,7 +210,9 @@ function Register() {
 
   //return statement with form
   return (
-    <form onSubmit={onSubmit}>
+    <StyledRegister>
+    <div className='container'>
+      <form onSubmit={onSubmit}>
       <div className="whole-form">
         <h2>Sign Up Below!</h2>
         <div className="form-inputs">
@@ -159,6 +268,8 @@ function Register() {
       <button disabled={disabled}>Register</button>
       <Link to="/login">Already have an account?</Link>
     </form>
+    </div>
+    </StyledRegister>
   );
 } //End of Signup Function
 
