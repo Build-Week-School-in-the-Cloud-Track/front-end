@@ -97,10 +97,12 @@ body {
   background-repeat: no-repeat;
 }
 `
+
 const initialFormValues = {
     task: "",
     completed: false,
   };
+
 
   const initialFormErrors = {
     task: "",
@@ -118,9 +120,9 @@ const initialFormValues = {
         .string()
         .required("Task is required to register")
         .min(5, "Must be at least five characters"),
-    }); 
     
     //End of FormSchema
+
     const inputChange = (name, value) => {
       yup
         .reach(taskformSchema, name)
@@ -149,10 +151,6 @@ const initialFormValues = {
         task: formValues.task,
         completed: false,
       };
-      axios
-        .post('https://reqres.in/api/users', newTask)
-        .then(res => console.log('submitted', res.data))
-        .catch(err => console.log(err));
     };
 
     const onInputChange = evt => {
