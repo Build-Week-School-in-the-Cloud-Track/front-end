@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import * as yup from "yup";
+import { Link } from "react-router-dom";
 
 const initialFormValues = {
   email: "",
@@ -151,6 +152,7 @@ function Register() {
         </div>
       </div>
       <button disabled={disabled}>Register</button>
+      <Link to="/login">Already have an account?</Link>
     </form>
   );
 } //End of Signup Function
