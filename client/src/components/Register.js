@@ -74,10 +74,12 @@ function Register() {
   const onSubmit = evt => {
     evt.preventDefault();
     const newUser = {
-      email: formValues.email,
-      password: formValues.password,
-      name: formValues.name,
-      role: formValues.role,
+      user: {
+        email: formValues.email,
+        password: formValues.password,
+        name: formValues.name,
+        role: formValues.role,
+      },
     };
     axiosWithAuth()
       .post("/api/auth/register", newUser)
