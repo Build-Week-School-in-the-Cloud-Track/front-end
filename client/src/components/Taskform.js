@@ -3,6 +3,7 @@ import axios from 'axios';
 import * as yup from "yup";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import img from '../img/clouds1.jpg'
 
 export const NewTaskForm = styled.div`
   form {
@@ -11,6 +12,11 @@ export const NewTaskForm = styled.div`
   width: 90%;
   max-width: 300px;
   margin: 0 auto;
+}
+
+.container {
+  height: 100vh;
+  background-image: url(${img});
 }
 
 label {
@@ -162,21 +168,24 @@ const initialFormValues = {
 
     return (
       <NewTaskForm>
-        <form onSubmit={onSubmit}>
-          <div className="whole-form">
-            <div className="form-inputs">
-                <input
-                  value={formValues.task}
-                  onChange={onInputChange}
-                  name="task"
-                  type="text"
-                  placeholder="New Task Here"
-                />
-              <div>{formErrors.task}</div>
+        <div className='container'>
+          <form onSubmit={onSubmit}>
+            <h2>Task Log</h2>
+            <div className="whole-form">
+              <div className="form-inputs">
+                  <input
+                    value={formValues.task}
+                    onChange={onInputChange}
+                    name="task"
+                    type="text"
+                    placeholder="New Task Here"
+                  />
+                <div>{formErrors.task}</div>
+              </div>
             </div>
-          </div>
-          <button disabled={disabled} type="submit">Send Task</button>
-        </form>
+            <button disabled={disabled} type="submit">Send Task</button>
+          </form>
+        </div>
         </NewTaskForm>
       );
   }; //End of Taskform

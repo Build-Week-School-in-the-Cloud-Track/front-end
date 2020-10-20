@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import * as yup from 'yup'
 import axios from 'axios'
 import styled from 'styled-components';
+import img from '../img/clouds1.jpg'
 
 export const StyledLogin = styled.div`
 
@@ -11,7 +12,15 @@ form {
   width: 90%;
   max-width: 300px;
   margin: 0 auto;
+}
 
+.container {
+  height: 100vh;
+  background-image: url(${img});
+}
+
+h2 {
+  margin: 6% 0 4% 0;
 }
 
 label {
@@ -102,10 +111,6 @@ button:disabled {
   margin-right: 5px;
 }
 
-body {
-  background-image: url('https://images.unsplash.com/uploads/14114640960629b5c3fa0/116dc05a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80');
-  background-repeat: no-repeat;
-}
 
 `
 
@@ -174,31 +179,34 @@ export default function Login () {
 
     return (
         <StyledLogin>
-            <form onSubmit={formSubmit}>
-                <label>
-                    Username
-                    <input
-                    type='text'
-                    name='username'
-                    id='username'
-                    value={formValues.username}
-                    onChange={inputChange}
-                    />
-                    {errorState.username.length > 0 ? <p className='error'>{errorState.username}</p> : null}
-                </label>
-                <label>
-                    Password
-                    <input
-                    type='password'
-                    name='password'
-                    id='password'
-                    value={formValues.password}
-                    onChange={inputChange}
-                    />
-                    {errorState.password.length > 0 ? <p className='error'>{errorState.password}</p> : null}
-                </label>
-                <button id='submitBtn' disabled={disabled}>Submit</button>
-            </form>
+            <div className='container'>
+              <form onSubmit={formSubmit}>
+              <h2>Login</h2>
+                  <label>
+                      Username
+                      <input
+                      type='text'
+                      name='username'
+                      id='username'
+                      value={formValues.username}
+                      onChange={inputChange}
+                      />
+                      {errorState.username.length > 0 ? <p className='error'>{errorState.username}</p> : null}
+                  </label>
+                  <label>
+                      Password
+                      <input
+                      type='password'
+                      name='password'
+                      id='password'
+                      value={formValues.password}
+                      onChange={inputChange}
+                      />
+                      {errorState.password.length > 0 ? <p className='error'>{errorState.password}</p> : null}
+                  </label>
+                  <button id='submitBtn' disabled={disabled}>Submit</button>
+              </form>
+            </div>
         </StyledLogin>
     )
 }

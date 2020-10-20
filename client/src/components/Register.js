@@ -3,7 +3,8 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import axios from 'axios'
 import * as yup from "yup";
 import styled from 'styled-components';
-import img from '../img/billy-huynh-v9bnfMCyKbg-unsplash.jpg'
+import img from '../img/clouds1.jpg'
+
 
 export const StyledRegister = styled.div`
 
@@ -14,6 +15,10 @@ form {
   max-width: 300px;
   margin: 0 auto;
 
+}
+.container {
+  height: 100vh;
+  background-image: url(${img});
 }
 
 label {
@@ -102,10 +107,6 @@ button:disabled {
   width: 15px;
   display: inline-block;
   margin-right: 5px;
-}
-
-body {
-  background-image: url(${img});
 }
 
 `
@@ -210,61 +211,63 @@ function Register() {
   //return statement with form
   return (
     <StyledRegister>
-    <form onSubmit={onSubmit}>
-      <div className="whole-form">
-        <h2>Sign Up Below!</h2>
-        <div className="form-inputs">
-          <label>
-            Email:
-            <input
-              value={formValues.email}
-              onChange={onInputChange}
-              name="email"
-              type="email"
-            />
-          </label>
-          <div>{formErrors.email}</div>
-          <label>
-            Password:
-            <input
-              value={formValues.password}
-              onChange={onInputChange}
-              name="password"
-              type="password"
-            />
-          </label>
-          <div>{formErrors.password}</div>
-          <label>
-            Name:
-            <input
-              value={formValues.name}
-              onChange={onInputChange}
-              name="name"
-              type="name"
-            />
-          </label>
-          <div>{formErrors.name}</div>
-          <div className="select">
+    <div className='container'>
+      <form onSubmit={onSubmit}>
+        <div className="whole-form">
+          <h2>Sign Up Below!</h2>
+          <div className="form-inputs">
             <label>
-              Role
-              <select
-                className="field"
+              Email:
+              <input
+                value={formValues.email}
                 onChange={onInputChange}
-                value={formValues.role}
-                name="role"
-              >
-                <option value="">--Select--</option>
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-                <option value="volunteer">Volunteer</option>
-              </select>
+                name="email"
+                type="email"
+              />
             </label>
-            <div>{formErrors.role}</div>
+            <div>{formErrors.email}</div>
+            <label>
+              Password:
+              <input
+                value={formValues.password}
+                onChange={onInputChange}
+                name="password"
+                type="password"
+              />
+            </label>
+            <div>{formErrors.password}</div>
+            <label>
+              Name:
+              <input
+                value={formValues.name}
+                onChange={onInputChange}
+                name="name"
+                type="name"
+              />
+            </label>
+            <div>{formErrors.name}</div>
+            <div className="select">
+              <label>
+                Role
+                <select
+                  className="field"
+                  onChange={onInputChange}
+                  value={formValues.role}
+                  name="role"
+                >
+                  <option value="">--Select--</option>
+                  <option value="student">Student</option>
+                  <option value="admin">Admin</option>
+                  <option value="volunteer">Volunteer</option>
+                </select>
+              </label>
+              <div>{formErrors.role}</div>
+            </div>
           </div>
         </div>
-      </div>
-      <button disabled={disabled}>Register</button>
-    </form>
+        <button disabled={disabled}>Register</button>
+      </form>
+    </div>
     </StyledRegister>
   );
 } //End of Signup Function
