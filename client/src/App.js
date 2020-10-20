@@ -1,10 +1,10 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
 import { Switch, Route } from "react-router-dom";
-import Login from './components/Login'
+import Login from "./components/Login";
 
 import Register from "./components/Register";
-import Taskform from './components/Taskform';
+import Taskform from "./components/Taskform";
 
 export default function App() {
   return (
