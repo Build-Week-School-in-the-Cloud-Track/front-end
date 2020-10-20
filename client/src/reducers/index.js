@@ -1,5 +1,6 @@
 const initialState = {
+  userType: "",
   tasks: [],
-  isFetching: false,
+  isFetchingTasks: false,
   error: "",
 };
