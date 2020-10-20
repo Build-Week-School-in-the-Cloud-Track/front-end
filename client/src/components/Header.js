@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+
 const StyledHeader = styled.div `
 display: flex;
 justify-content: space-around;
@@ -29,16 +30,17 @@ h2 {
     align-items: center;
 }
 `
+
 export default function Header() {
     return (
         <StyledHeader>
-            <h2>School in the Cloud</h2>
-            <nav>
+          <h2>School in the Cloud</h2>
+          <nav>
             <Link className='register' to='/register'>Register</Link>
             <Link className='login' to='/login'>Login</Link>
             <Link className='taskform' to='/taskform'>Admin</Link>
             <Link className='tasklist'to='tasklist'>Volunteer</Link>
-            </nav>
+          </nav>
         </StyledHeader>
     )
 }

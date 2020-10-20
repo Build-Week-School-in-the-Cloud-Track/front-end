@@ -1,5 +1,6 @@
 const initialState = {
+  currentUser: {},
   tasks: [],
-  isFetching: false,
+  isFetchingTasks: false,
   error: "",
 };
