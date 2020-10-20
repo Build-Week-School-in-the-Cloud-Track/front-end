@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import axios from "axios";
 import * as yup from "yup";
 import { Link, useHistory } from "react-router-dom";
 
@@ -79,12 +80,12 @@ function Register() {
       role: parseInt(formValues.role),
     };
     axiosWithAuth()
-      .post("/api/auth/register", newUser)
+      .post("api/auth/register", newUser)
       .then(res => {
         localStorage.setItem("token", res.data.token);
-        history.push(`/${formValues.role}`);
+        history.push(`/${res.data.user.role}`);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.response));
   };
 
   // onInputChange function input change by target value
