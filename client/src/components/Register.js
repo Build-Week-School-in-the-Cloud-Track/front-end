@@ -2,114 +2,110 @@ import React, { useState, useEffect } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { Link, useHistory } from "react-router-dom";
 import * as yup from "yup";
-import styled from 'styled-components';
-import img from '../img/clouds1.jpg'
-
+import styled from "styled-components";
+import img from "../img/clouds1.jpg";
 
 export const StyledRegister = styled.div`
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .container {
+    height: 100vh;
+    background-image: url(${img});
+  }
 
-form {
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  max-width: 300px;
-  margin: 0 auto;
+  label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px 0;
+    font-size: 1.4rem;
+  }
 
-}
-.container {
-  height: 100vh;
-  background-image: url(${img});
-}
+  input,
+  textarea {
+    width: 100%;
+    margin: 5px 0 0;
+    display: block;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+    transition: all 0.3s;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    background-color: white;
+  }
+  select {
+    height: 40px;
+    width: 325px;
+  }
 
-label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 10px 0;
-  font-size: 1.4rem;
-}
+  select:focus {
+    outline: none;
+    border-color: #0099ff;
+  }
 
-input,
-textarea {
-  width: 100%;
-  margin: 5px 0 0;
-  display: block;
-  width: 100%;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  padding: 10px;
-  transition: all 0.3s;
-  font-size: 1.4rem;
-  letter-spacing: 0.5px;
-  background-color: white;
-}
-select {
-  height: 40px;
-  width: 325px;
-}
+  input:focus {
+    outline: none;
+    border-color: #0099ff;
+  }
 
-select:focus {
-  outline: none;
-  border-color: #0099ff;
-}
+  input:placeholder {
+    color: #a8b2b2;
+  }
 
-input:focus {
-  outline: none;
-  border-color:#0099ff;
-}
+  button {
+    width: 150px;
+    display: inline-block;
+    padding: 8px 11px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    outline: none;
+    background-color: #0099ff;
+    background-image: linear-gradient(to right, #0099ff, #ccf5ff);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
 
-input:placeholder {
-  color: #a8b2b2;
-}
+  button:hover {
+    background-image: none;
+    background-color: #ccf5ff;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+  }
 
-button {
-  width: 150px;
-  display: inline-block;
-  padding: 8px 11px;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  border: 0;
-  border-radius: 5px;
-  letter-spacing: 2px;
-  outline: none;
-  background-color: #0099ff;
-  background-image: linear-gradient(to right, #0099ff, #ccf5ff);
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
+  button:disabled {
+    background-image: none;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.1);
+    cursor: not-allowed;
+  }
 
-button:hover {
-  background-image: none;
-  background-color: #ccf5ff;
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-}
+  .error {
+    font-size: 1.2rem;
+    color: red;
+  }
 
-button:disabled {
-  background-image: none;
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.1);
-  cursor: not-allowed;
-}
+  .terms {
+    display: inline-block;
+    align-self: self-start;
+  }
 
-.error {
-  font-size: 1.2rem;
-  color: red;
-}
-
-.terms {
-  display: inline-block;
-  align-self: self-start;
-}
-
-.terms input {
-  width: 15px;
-  display: inline-block;
-  margin-right: 5px;
-}
-
-`
+  .terms input {
+    width: 15px;
+    display: inline-block;
+    margin-right: 5px;
+  }
+`;
 
 const initialFormValues = {
   email: "",
@@ -211,64 +207,64 @@ function Register() {
   //return statement with form
   return (
     <StyledRegister>
-    <div className='container'>
-      <form onSubmit={onSubmit}>
-      <div className="whole-form">
-        <h2>Sign Up Below!</h2>
-        <div className="form-inputs">
-          <label>
-            Email:
-            <input
-              value={formValues.email}
-              onChange={onInputChange}
-              name="email"
-              type="email"
-            />
-          </label>
-          <div>{formErrors.email}</div>
-          <label>
-            Password:
-            <input
-              value={formValues.password}
-              onChange={onInputChange}
-              name="password"
-              type="password"
-            />
-          </label>
-          <div>{formErrors.password}</div>
-          <label>
-            Name:
-            <input
-              value={formValues.name}
-              onChange={onInputChange}
-              name="name"
-              type="name"
-            />
-          </label>
-          <div>{formErrors.name}</div>
-          <div className="select">
-            <label>
-              Role
-              <select
-                className="field"
-                onChange={onInputChange}
-                value={formValues.role}
-                name="role"
-              >
-                <option value="">--Select--</option>
-                <option value={1}>Student</option>
-                <option value={2}>Admin</option>
-                <option value={3}>Volunteer</option>
-              </select>
-            </label>
-            <div>{formErrors.role}</div>
+      <div className="container">
+        <form onSubmit={onSubmit}>
+          <div className="whole-form">
+            <h2>Sign Up Below!</h2>
+            <div className="form-inputs">
+              <label>
+                Email:
+                <input
+                  value={formValues.email}
+                  onChange={onInputChange}
+                  name="email"
+                  type="email"
+                />
+              </label>
+              <div>{formErrors.email}</div>
+              <label>
+                Password:
+                <input
+                  value={formValues.password}
+                  onChange={onInputChange}
+                  name="password"
+                  type="password"
+                />
+              </label>
+              <div>{formErrors.password}</div>
+              <label>
+                Name:
+                <input
+                  value={formValues.name}
+                  onChange={onInputChange}
+                  name="name"
+                  type="name"
+                />
+              </label>
+              <div>{formErrors.name}</div>
+              <div className="select">
+                <label>
+                  Role
+                  <select
+                    className="field"
+                    onChange={onInputChange}
+                    value={formValues.role}
+                    name="role"
+                  >
+                    <option value="">--Select--</option>
+                    <option value={1}>Student</option>
+                    <option value={2}>Admin</option>
+                    <option value={3}>Volunteer</option>
+                  </select>
+                </label>
+                <div>{formErrors.role}</div>
+              </div>
+            </div>
           </div>
-        </div>
+          <button disabled={disabled}>Register</button>
+          <Link to="/login">Already have an account?</Link>
+        </form>
       </div>
-      <button disabled={disabled}>Register</button>
-      <Link to="/login">Already have an account?</Link>
-    </form>
-    </div>
     </StyledRegister>
   );
 } //End of Signup Function
