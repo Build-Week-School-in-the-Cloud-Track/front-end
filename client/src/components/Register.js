@@ -11,6 +11,7 @@ const initialFormValues = {
   password: "",
   name: "",
   role: 0,
+  country: "",
 };
 
 const initialFormErrors = {
@@ -18,6 +19,7 @@ const initialFormErrors = {
   password: "",
   name: "",
   role: "",
+  country: "",
 };
 
 const initialDisabled = true;
@@ -61,6 +63,7 @@ function Register(props) {
       password: formValues.password.trim(),
       name: formValues.name.trim(),
       role: parseInt(formValues.role),
+      country: formValues.country,
     };
 
     const responseCallback = res => {
@@ -119,7 +122,7 @@ function Register(props) {
                   value={formValues.name}
                   onChange={onInputChange}
                   name="name"
-                  type="name"
+                  type="text"
                 />
               </label>
               <div>{formErrors.name}</div>
@@ -138,6 +141,17 @@ function Register(props) {
                     <option value={3}>Volunteer</option>
                   </select>
                 </label>
+                {formValues.role == 3 ? (
+                  <label>
+                    Country
+                    <input
+                      value={formValues.country}
+                      onChange={onInputChange}
+                      name="country"
+                      type="text"
+                    />
+                  </label>
+                ) : null}
                 <div>{formErrors.role}</div>
               </div>
             </div>

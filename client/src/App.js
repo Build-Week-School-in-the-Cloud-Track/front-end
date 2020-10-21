@@ -19,6 +19,9 @@ function App() {
           {/* <Taskform /> */}
           <TaskList />
         </PrivateRoute>
+        <PrivateRoute path="/volunteer">
+          <TaskList />
+        </PrivateRoute>
       </Switch>
     </div>
   );
