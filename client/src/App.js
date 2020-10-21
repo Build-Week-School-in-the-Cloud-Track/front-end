@@ -16,7 +16,7 @@ function App() {
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <PrivateRoute path="/admin">
-          {/* <Taskform /> */}
+          <Taskform />
           <TaskList />
         </PrivateRoute>
         <PrivateRoute path="/volunteer">
@@ -28,7 +28,6 @@ function App() {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     currentUser: state.currentUser,
   };

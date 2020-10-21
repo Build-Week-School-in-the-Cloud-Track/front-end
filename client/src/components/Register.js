@@ -20,6 +20,7 @@ const initialFormErrors = {
   name: "",
   role: "",
   country: "",
+  requestError: "",
 };
 
 const initialDisabled = true;
@@ -70,7 +71,12 @@ function Register(props) {
       localStorage.setItem("token", res.data.token);
       history.push(`/${res.data.user.role}`);
     };
-    const errorCallback = err => console.log(err.response);
+    const errorCallback = err => {
+      setFormErrors({
+        ...formErrors,
+        requestError: err.response.data.error,
+      });
+    };
 
     props.userRegister({ newUser, responseCallback, errorCallback });
   };
@@ -157,6 +163,7 @@ function Register(props) {
             </div>
           </div>
           <button disabled={disabled}>Register</button>
+          <div>{formErrors.requestError}</div>
           <Link to="/login">Already have an account?</Link>
         </form>
       </div>
