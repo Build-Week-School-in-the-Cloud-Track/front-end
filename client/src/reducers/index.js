@@ -1,4 +1,4 @@
-import { USER_LOGIN } from "../actions";
+import { USER_LOGIN, USER_REGISTER } from "../actions";
 
 const initialState = {
   currentUser: {},
@@ -10,6 +10,12 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_LOGIN:
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
+
+    case USER_REGISTER:
       return {
         ...state,
         currentUser: action.payload,

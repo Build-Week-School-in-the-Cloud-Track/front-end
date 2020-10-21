@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { connect } from "react-redux";
+import { userRegister } from "../actions";
 import { Link, useHistory } from "react-router-dom";
 import { registerSchema } from "./validation/registerSchema";
 import { StyledRegister } from "../StyledComponents/StyledRegister";
@@ -21,7 +22,7 @@ const initialFormErrors = {
 
 const initialDisabled = true;
 
-function Register() {
+function Register(props) {
   //Constants Below
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
@@ -61,13 +62,14 @@ function Register() {
       name: formValues.name.trim(),
       role: parseInt(formValues.role),
     };
-    axiosWithAuth()
-      .post("api/auth/register", newUser)
-      .then(res => {
-        localStorage.setItem("token", res.data.token);
-        history.push(`/${res.data.user.role}`);
-      })
-      .catch(err => console.log(err.response));
+
+    const responseCallback = res => {
+      localStorage.setItem("token", res.data.token);
+      history.push(`/${res.data.user.role}`);
+    };
+    const errorCallback = err => console.log(err.response);
+
+    props.userRegister({ newUser, responseCallback, errorCallback });
   };
 
   // onInputChange function input change by target value
@@ -148,4 +150,4 @@ function Register() {
   );
 } //End of Signup Function
 
-export default Register;
+export default connect(null, { userRegister })(Register);

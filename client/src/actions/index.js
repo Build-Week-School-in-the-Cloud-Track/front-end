@@ -1,4 +1,3 @@
-import { useHistory } from "react-router-dom";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 export const FETCH_TASKS_START = "FETCH_TASKS_START";
@@ -6,6 +5,7 @@ export const FETCH_TASKS_SUCCESS = "FETCH_TASKS_SUCCESS";
 export const FETCH_TASKS_FAILURE = "FETCH_TASKS_FAILURE";
 
 export const USER_LOGIN = "USER_LOGIN";
+export const USER_REGISTER = "USER_REGISTER";
 
 export const getTasks = () => dispatch => {
   dispatch({ type: FETCH_TASKS_START });
@@ -19,9 +19,21 @@ export const userLogin = ({
   axiosWithAuth()
     .post("/api/auth/login", user)
     .then(res => {
-      console.log("Before Dispatch");
       dispatch({ type: USER_LOGIN, payload: res.data.user });
-      console.log("After Dispatch");
+      responseCallback(res);
+    })
+    .catch(err => errorCallback(err));
+};
+
+export const userRegister = ({
+  newUser,
+  responseCallback,
+  errorCallback,
+}) => dispatch => {
+  axiosWithAuth()
+    .post("/api/auth/register", newUser)
+    .then(res => {
+      dispatch({ type: USER_REGISTER, payload: res.data.user });
       responseCallback(res);
     })
     .catch(err => errorCallback(err));
