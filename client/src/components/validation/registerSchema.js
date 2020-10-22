@@ -17,7 +17,5 @@ export const registerSchema = yup.object().shape({
     .string()
     .oneOf(["1", "2", "3"], "Please select student, admin, or volunteer")
     .required("Selection required"),
-  country: yup
-    .string()
-    .required("Please provide your country if you are a volunteer"),
+  country: yup.string(),
 });

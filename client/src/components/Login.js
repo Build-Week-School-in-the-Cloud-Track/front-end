@@ -110,7 +110,7 @@ function Login(props) {
             Submit
           </button>
           {errorState.requestError && (
-            <p classname="error">{errorState.requestError}</p>
+            <p className="error">{errorState.requestError}</p>
           )}
           <Link to="/register">Don't have an account?</Link>
         </form>

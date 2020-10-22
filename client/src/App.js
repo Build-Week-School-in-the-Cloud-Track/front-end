@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import Taskform from "./components/Taskform";
 import Header from "./components/Header";
 import TaskList from "./components/TaskList";
+import VolunteerList from "./components/VolunteerList";
 
 function App() {
   return (
@@ -15,13 +16,10 @@ function App() {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <PrivateRoute path="/admin">
-          <Taskform />
-          <TaskList />
-        </PrivateRoute>
-        <PrivateRoute path="/volunteer">
-          <TaskList />
-        </PrivateRoute>
+        <PrivateRoute path="/admin" component={Taskform} />
+        <PrivateRoute path="/volunteer" component={TaskList} />
+        <PrivateRoute path="/student" component={VolunteerList} />
+        <Route path="/" component={Login} />
       </Switch>
     </div>
   );
