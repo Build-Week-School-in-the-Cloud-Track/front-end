@@ -1,9 +1,17 @@
-import { USER_LOGIN, USER_REGISTER } from "../actions";
+import {
+  USER_LOGIN,
+  USER_REGISTER,
+  FETCH_VOLUNTEERS_START,
+  FETCH_VOLUNTEERS_SUCCESS,
+  FETCH_VOLUNTEERS_FAILURE,
+} from "../actions";
 
 const initialState = {
   currentUser: {},
   tasks: [],
   isFetchingTasks: false,
+  volunteers: [],
+  isFetchingVolunteers: false,
   error: "",
 };
 
@@ -19,6 +27,27 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentUser: action.payload,
+      };
+
+    case FETCH_VOLUNTEERS_START:
+      return {
+        ...state,
+        isFetchingVolunteers: true,
+      };
+
+    case FETCH_VOLUNTEERS_SUCCESS:
+      return {
+        ...state,
+        volunteers: action.payload,
+        isFetchingVolunteers: false,
+        error: "",
+      };
+
+    case FETCH_VOLUNTEERS_FAILURE:
+      return {
+        ...state,
+        isFetchingVolunteers: false,
+        error: action.payload,
       };
 
     default:

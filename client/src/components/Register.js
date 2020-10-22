@@ -11,6 +11,7 @@ const initialFormValues = {
   password: "",
   name: "",
   role: 0,
+  country: "",
 };
 
 const initialFormErrors = {
@@ -18,6 +19,8 @@ const initialFormErrors = {
   password: "",
   name: "",
   role: "",
+  country: "",
+  requestError: "",
 };
 
 const initialDisabled = true;
@@ -61,13 +64,19 @@ function Register(props) {
       password: formValues.password.trim(),
       name: formValues.name.trim(),
       role: parseInt(formValues.role),
+      country: formValues.country,
     };
 
     const responseCallback = res => {
       localStorage.setItem("token", res.data.token);
       history.push(`/${res.data.user.role}`);
     };
-    const errorCallback = err => console.log(err.response);
+    const errorCallback = err => {
+      setFormErrors({
+        ...formErrors,
+        requestError: err.response.data.error,
+      });
+    };
 
     props.userRegister({ newUser, responseCallback, errorCallback });
   };
@@ -119,7 +128,7 @@ function Register(props) {
                   value={formValues.name}
                   onChange={onInputChange}
                   name="name"
-                  type="name"
+                  type="text"
                 />
               </label>
               <div>{formErrors.name}</div>
@@ -138,11 +147,23 @@ function Register(props) {
                     <option value={3}>Volunteer</option>
                   </select>
                 </label>
+                {formValues.role == 3 ? (
+                  <label>
+                    Country
+                    <input
+                      value={formValues.country}
+                      onChange={onInputChange}
+                      name="country"
+                      type="text"
+                    />
+                  </label>
+                ) : null}
                 <div>{formErrors.role}</div>
               </div>
             </div>
           </div>
           <button disabled={disabled}>Register</button>
+          <div>{formErrors.requestError}</div>
           <Link to="/login">Already have an account?</Link>
         </form>
       </div>

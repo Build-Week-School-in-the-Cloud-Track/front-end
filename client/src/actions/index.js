@@ -7,6 +7,10 @@ export const FETCH_TASKS_FAILURE = "FETCH_TASKS_FAILURE";
 export const USER_LOGIN = "USER_LOGIN";
 export const USER_REGISTER = "USER_REGISTER";
 
+export const FETCH_VOLUNTEERS_START = "FETCH_VOLUNTEERS_START";
+export const FETCH_VOLUNTEERS_SUCCESS = "FETCH_VOLUNTEERS_SUCCESS";
+export const FETCH_VOLUNTEERS_FAILURE = "FETCH_VOLUNTEERS_FAILURE";
+
 export const getTasks = () => dispatch => {
   dispatch({ type: FETCH_TASKS_START });
 };
@@ -37,4 +41,20 @@ export const userRegister = ({
       responseCallback(res);
     })
     .catch(err => errorCallback(err));
+};
+
+export const getVolunteers = () => dispatch => {
+  dispatch({ type: FETCH_VOLUNTEERS_START });
+  axiosWithAuth()
+    .get("/api/volunteers")
+    .then(res => {
+      console.log(res.data);
+      dispatch({ type: FETCH_VOLUNTEERS_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: FETCH_TASKS_FAILURE,
+        payload: err.response.data.message,
+      });
+    });
 };
