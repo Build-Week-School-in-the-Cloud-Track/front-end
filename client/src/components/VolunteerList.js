@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { getVolunteers } from "../actions";
 import { connect } from "react-redux";
+import { StyledVolunteers } from "../StyledComponents/StyledVolunteers";
 
 function VolunteerList(props) {
   const fetchVolunteers = () => {
@@ -12,7 +13,7 @@ function VolunteerList(props) {
   }, []);
 
   return (
-    <div className="volunteers">
+    <StyledVolunteers>
       {props.isFetchingVolunteers && <p>Getting list of volunteers...</p>}
       {props.volunteers.map(volunteer => {
         return (
@@ -43,7 +44,7 @@ function VolunteerList(props) {
           </div>
         );
       })}
-    </div>
+    </StyledVolunteers>
   );
 }
 
