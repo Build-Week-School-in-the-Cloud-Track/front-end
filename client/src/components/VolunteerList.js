@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { getVolunteers } from "../actions";
 import { connect } from "react-redux";
+import { StyledVolunteers } from "../StyledComponents/StyledVolunteers";
 
 function VolunteerList(props) {
   const fetchVolunteers = () => {
@@ -12,7 +13,8 @@ function VolunteerList(props) {
   }, []);
 
   return (
-    <div className="volunteers">
+    <StyledVolunteers>
+      {props.isFetchingVolunteers && <p>Getting list of volunteers...</p>}
       {props.volunteers.map(volunteer => {
         return (
           <div className="volunteer" key={volunteer.id}>
@@ -20,25 +22,29 @@ function VolunteerList(props) {
             <p>Email: {volunteer.email}</p>
             <p>Availability: </p>
             <table>
-              <tr>
-                <th>Day</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-              </tr>
-              {volunteer.availability.map(item => {
-                return (
-                  <tr key={item.id}>
-                    <td>{item.day}</td>
-                    <td>{item.time_start}</td>
-                    <td>{item.time_end}</td>
-                  </tr>
-                );
-              })}
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {volunteer.availability.map(item => {
+                  return (
+                    <tr key={item.id}>
+                      <td>{item.day}</td>
+                      <td>{item.time_start}</td>
+                      <td>{item.time_end}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </table>
           </div>
         );
       })}
-    </div>
+    </StyledVolunteers>
   );
 }
 
